@@ -20,7 +20,7 @@ const sendPushNotification = async (title, body, email) => {
       notification: {
         notificationCount: 1,
         imageUrl:
-          "https://documento.errepar.com/_next/image?url=https%3A%2F%2Fepcdn.errepar.com%2Fimagenes%2Factualidad%2F2024-03%2Fmi-estudio-modulo-ganancias.jpg&w=3840&q=75",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAS3IHvVzVAjDca6w5_rDolrSIdtzCTz8Yb_A2f1NrNg&s",
       },
     },
   });
