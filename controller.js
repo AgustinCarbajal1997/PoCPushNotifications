@@ -49,6 +49,30 @@ const sendMulticastPushNotification = async (
       },
     },
   });
+
+  await firebaseAdmin.messaging().sendToTopic("mantenimiento", {
+    notification: {
+      title: "Alerta de mantenimiento 🚨",
+      body: "Entre las 11hs y 12hs vamos a estar realizando tareas de mantenimiento 🔧",
+    },
+    data: {
+      click_action: "ALERT_MODAL",
+      tab: "/home",
+    },
+  });
+};
+
+const sendToTopicPushNotification = async () => {
+  await firebaseAdmin.messaging().sendToTopic("mantenimiento", {
+    notification: {
+      title: "Alerta de mantenimiento 🚨",
+      body: "Entre las 11hs y 12hs vamos a estar realizando tareas de mantenimiento 🔧",
+    },
+    data: {
+      click_action: "ALERT_MODAL",
+      tab: "/home",
+    },
+  });
 };
 
 const getUser = async (email) => {
@@ -74,5 +98,6 @@ const getMultipleUsers = async (emails) => {
 const controller = {
   sendPushNotification,
   sendMulticastPushNotification,
+  sendToTopicPushNotification,
 };
 module.exports = controller;
