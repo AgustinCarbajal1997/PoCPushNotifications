@@ -8,7 +8,7 @@ const firebaseAdmin = admin.initializeApp({
 
 const db = admin.firestore();
 
-const sendPushNotification = async (title, body, email) => {
+const sendPushNotification = async (title, body, email, data, imageUrl) => {
   const user = await getUser(email);
   await firebaseAdmin.messaging().send({
     token: user.fcmToken,
@@ -16,11 +16,36 @@ const sendPushNotification = async (title, body, email) => {
       title,
       body,
     },
+    data,
     android: {
       notification: {
-        notificationCount: 1,
-        imageUrl:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAS3IHvVzVAjDca6w5_rDolrSIdtzCTz8Yb_A2f1NrNg&s",
+        imageUrl,
+      },
+    },
+  });
+};
+
+const sendMulticastPushNotification = async (
+  title,
+  body,
+  emails,
+  data,
+  imageUrl
+) => {
+  const users = await getMultipleUsers(emails);
+  const fcmTokens = users.map((user) => user.fcmToken);
+  console.log(fcmTokens);
+
+  await firebaseAdmin.messaging().sendEachForMulticast({
+    tokens: fcmTokens,
+    notification: {
+      title,
+      body,
+    },
+    data,
+    android: {
+      notification: {
+        imageUrl,
       },
     },
   });
@@ -36,8 +61,18 @@ const getUser = async (email) => {
   return user[0];
 };
 
+const getMultipleUsers = async (emails) => {
+  const snapshot = await db
+    .collection("users")
+    .where("email", "in", emails)
+    .get();
+  let users = [];
+  snapshot.forEach((doc) => users.push(doc.data()));
+  return users;
+};
+
 const controller = {
   sendPushNotification,
-  getUser,
+  sendMulticastPushNotification,
 };
 module.exports = controller;
