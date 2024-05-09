@@ -16,7 +16,9 @@ const sendPushNotification = async (title, body, email, data, imageUrl) => {
       title,
       body,
     },
-    data,
+    data: {
+      ...data,
+    },
     android: {
       notification: {
         imageUrl,
