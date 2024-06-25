@@ -1,31 +1,14 @@
 const express = require("express");
-const controller = require("./controller");
-const app = express();
+const router = require("./src/router/router");
+const { FB } = require("./src/config/config");
 
+const app = express();
+FB.initFirebaseAdmin();
+
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.post("/sendPushNotification", async function (req, res) {
-  const { title, body, email, data, imageUrl } = req.body;
-  await controller.sendPushNotification(title, body, email, data, imageUrl);
-  res.json({
-    statusCode: 200,
-    status: "success",
-  });
-});
+app.use("/api/notifications", router);
 
-app.post("/sendMulticastPushNotification", async function (req, res) {
-  const { title, body, emails, data, imageUrl } = req.body;
-  await controller.sendMulticastPushNotification(
-    title,
-    body,
-    emails,
-    data,
-    imageUrl
-  );
-  res.json({
-    statusCode: 200,
-    status: "success",
-  });
-});
-
-app.listen(3000, () => console.log("Servidor iniciado en puerto:" + 3000));
+const PORT = 3000;
+app.listen(PORT, () => console.log("Servidor iniciado en puerto:" + PORT));
