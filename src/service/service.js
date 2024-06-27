@@ -2,7 +2,7 @@ const { FB } = require("../config/config");
 
 const sendPushNotificationService = async (title, body, data, token) => {
   try {
-    await FB.getFBConnection().messaging().send({
+    await FB.sendPushNotification({
       token,
       notification: {
         title,
@@ -26,7 +26,7 @@ const sendMulticastPushNotificationService = async (
   tokens
 ) => {
   try {
-    await FB.getFBConnection().messaging().sendEachForMulticast({
+    await FB.sendMulticastPushNotification({
       tokens,
       notification: {
         title,

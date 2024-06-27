@@ -11,8 +11,20 @@ class FirebaseConfig {
     return this.firebaseAdmin;
   }
 
-  getFBConnection() {
-    return this.firebaseAdmin;
+  async sendPushNotification(notification) {
+    try {
+      await this.firebaseAdmin.messaging().send(notification);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async sendMulticastPushNotification(notification) {
+    try {
+      await this.firebaseAdmin.messaging().sendEachForMulticast(notification);
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
